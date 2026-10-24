@@ -1,16 +1,32 @@
 services:
-  db:
+  database:
     image: postgres:16-alpine
     container_name: local_postgres
     restart: always
     environment:
       POSTGRES_USER: dbuser
-      POSTGRES_PASSWORD: StrongPassword123!
+      POSTGRES_PASSWORD: dbpassword123
       POSTGRES_DB: company_db
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - homelab_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: local_pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: furkanoneramz@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: adminpassword123
+    networks:
+      - homelab_network
 
 volumes:
   pgdata:
+
+networks:
+  homelab_network:
+    driver: bridge
